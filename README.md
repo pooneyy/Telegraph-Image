@@ -39,13 +39,32 @@
 
 ## 如何部署
 
-### 提前准备
+### 部署到服务器 (容器化部署)
 
-你唯一需要提前准备的就是一个 Cloudflare 账户 （如果需要在自己的服务器上部署，不依赖 Cloudflare，可参考[#46](https://github.com/cf-pages/Telegraph-Image/issues/46) ）
+下载 [docker-compose.example.yml](https://github.com/cf-pages/Telegraph-Image/blob/main/docker/docker-compose.example.yml)，将其重命名为 `docker-compose.yml`，并根据需要修改配置文件，使用 `
+docker compose up -d` 启动容器。
 
-### 手把手教程
+```yaml
+services:
+  telegraph-image:
+    image: ghcr.io/cf-pages/telegraph-image:latest
+    container_name: telegraph-image
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data:/app/data
+    environment:
+      - BASIC_USER= # Dashboard 用户名，必填
+      - BASIC_PASS= # Dashboard 密码，必填
+      - TG_Chat_ID= # Chat_ID，必填
+      - TG_Bot_Token= # Bot_Token，必填
+      - WhiteList_Mode=true # 是否开启白名单模式，选填
+      - ModerateContentApiKey= # 图片审查 API key，选填
+```
 
-简单 3 步，即可部署本项目，拥有自己的图床
+### 部署到 Cloudflare Pages
+
+0.注册 Cloudflare
 
 1.Fork 本仓库 (注意：必须使用 Git 或者 Wrangler 命令行工具部署后才能正常使用，[文档](https://developers.cloudflare.com/pages/functions/get-started/#deploy-your-function))
 

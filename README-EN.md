@@ -24,13 +24,31 @@ If you don't have a Telegram account yet, please create one first. Then, follow 
    
 ## Deployment
 
-### Preparation
+### Deployment to server (containerized deployment)
 
-The only thing you need to prepare in advance is a Cloudflare account
+Download [docker-compose.example.yml](https://github.com/cf-pages/Telegraph-Image/blob/main/docker/docker-compose.example.yml), rename it to `docker-compose.yml`, and modify the configuration file as needed, using `docker compose up -d` to start the container.
+
+```yaml
+services:
+  telegraph-image:
+    image: ghcr.io/cf-pages/telegraph-image:latest
+    container_name: telegraph-image
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data:/app/data
+    environment:
+      - BASIC_USER=   # Dashboard Username, required
+      - BASIC_PASS=   # Dashboard Password, required
+      - TG_Chat_ID=   # Chat_ID, required
+      - TG_Bot_Token= # Bot_Token, required
+      - WhiteList_Mode=true    # Whitelist mode, optional
+      - ModerateContentApiKey= # Image review API key, optional
+```
 
 ### Step by Step Instruction
 
-3 simple steps to deploy this project and have your own image hosting
+0.Sign up for Cloudflare.
 
 1.Fork this repository (Note: In order to make this work. You have to using Git or Wrangler CLI to deploy this project. [Document](https://developers.cloudflare.com/pages/functions/get-started/#deploy-your-function))
 
